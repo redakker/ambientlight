@@ -29,7 +29,7 @@ For example you can use a microcontroller and LED strip with https://github.com/
 
 ## Usage
 
-Download the release version from here:
+Download the release version from here: https://github.com/redakker/ambientlight/releases/tag/release
 
 - run in your Windows system
 - set the MQTT credentials or the Webhook
