@@ -20,7 +20,7 @@ For example you can use a microcontroller and LED strip with https://github.com/
 - send the color data by calling a webhook
 - set send frequiency between 200ms and 15s 
 - skip the dark pixels (if R and G and B component are under 100)
-- save config to a file (C:\Users\[username]\AppData\Roaming\AmbientLight\config.json)
+- save config to a file (C:\Users\ [username] \AppData\Roaming\AmbientLight\config.json)
 
 ## Todos / Known issues
 
