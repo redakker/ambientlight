@@ -47,6 +47,7 @@ Environment: .NET 6
 
 
 This is my first .NET project so please be nice to me if you find some mistake. :)
+
 Buy me a coffee: https://www.buymeacoffee.com/redakker
 
 
