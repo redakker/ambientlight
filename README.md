@@ -27,6 +27,18 @@ For example you can use a microcontroller and LED strip with https://github.com/
 - currently, it analyzes **primary** screen only
 - it has no output (debug, error log)
 
+## Usage
+
+Download the release version from here:
+
+- run in your Windows system
+- set the MQTT credentials or the Webhook
+- set the desired checkboxes
+- change the send frequency if needed
+- press apply settings
+
+If the "Running" checkbox is set then the calculated RGB or HEX code is sent periodically with a set frequency.
+
 ## For developers
 
 This software is developed in Visual Studio 2022. After download the repository, open the solution file and it will be ready to run.
@@ -35,5 +47,6 @@ Environment: .NET 6
 
 
 This is my first .NET project so please be nice to me if you find some mistake. :)
+Buy me a coffee: https://www.buymeacoffee.com/redakker
 
 
