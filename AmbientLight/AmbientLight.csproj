@@ -6,6 +6,9 @@
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
+    <RepositoryUrl>https://github.com/redakker/ambientlight</RepositoryUrl>
+    <Copyright>redakker</Copyright>
+    <SignAssembly>False</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>    
