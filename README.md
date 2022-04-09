@@ -39,6 +39,21 @@ Download the release version from here: https://github.com/redakker/ambientlight
 
 If the "Running" checkbox is set then the calculated RGB or HEX code is sent periodically with a set frequency.
 
+## Examples
+
+### Control WLED
+Configure a webhook which calls the WLED microcontoller's API. The webhook is similar to this
+
+http:// [WLED_IP_ADDRESS] /win&T=1&FX=0&SX=0&R={R}&G={G}&B={B}
+
+### Control LEDs with Home Assistant
+
+Configure an automation which listents on an MQTT topic. Example:
+- topic: /ambient/color
+- message: {R},{G},{B}
+
+Configure an action for this automation which applies the RGB color for the chosen lights
+
 ## For developers
 
 This software is developed in Visual Studio 2022. After download the repository, open the solution file and it will be ready to run.
