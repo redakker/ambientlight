@@ -10,6 +10,9 @@ The output color data can be an RGB color code (128,234,55) or a HEX code (#D36A
 This tool can be used to create an ambient light behind your PC monitor. Any remote controlled light can be used as light source.
 For example you can use a microcontroller and LED strip with https://github.com/Aircoookie/WLED installed on it.
 
+Demo:
+![alt text](https://raw.githubusercontent.com/redakker/ambientlight/main/AmbientLight/material/demo.gif)
+
 ## Features
 
 - calculate the average color of the screen
