@@ -11,6 +11,7 @@ namespace AmbientLight
         public event EventHandler colorGeneratedEvent;
         MQTTService mqttService = new MQTTService();
         WebhookService webhookService = new WebhookService();
+        string lastColor = ""; // Prevent sending duplicates
 
 
         public AmbientForm(Config config)
@@ -46,13 +47,18 @@ namespace AmbientLight
             // We expecting a ColorEvent here
             ColorEvent colorEvent = (ColorEvent) e;
 
-            await sendMQTT(colorEvent.color);
-            await callWebhook(colorEvent.color);
+            string hex = Utils.replaceWildCards("{HEX}", colorEvent.color);
 
+            if (lastColor != hex)
+            {
+                Debug.WriteLine("Sending color...");
+                lastColor = hex;
+                await sendMQTT(colorEvent.color);
+                await callWebhook(colorEvent.color);
 
-            // Update the wildcards' value in the view
-            updateWildcards(colorEvent.color);
-
+                // Update the wildcards' value in the view
+                // updateWildcards(colorEvent.color);
+            }
         }
 
         private void frequencyChanged(object sender, System.EventArgs e)
