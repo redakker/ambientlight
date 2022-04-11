@@ -90,7 +90,7 @@
             // getColorNow
             // 
             this.getColorNow.Location = new System.Drawing.Point(1016, 314);
-            this.getColorNow.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.getColorNow.Margin = new System.Windows.Forms.Padding(4);
             this.getColorNow.Name = "getColorNow";
             this.getColorNow.Size = new System.Drawing.Size(250, 31);
             this.getColorNow.TabIndex = 0;
@@ -104,7 +104,7 @@
             this.colorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.colorPanel.ForeColor = System.Drawing.SystemColors.ActiveCaption;
             this.colorPanel.Location = new System.Drawing.Point(1016, 54);
-            this.colorPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.colorPanel.Margin = new System.Windows.Forms.Padding(4);
             this.colorPanel.Name = "colorPanel";
             this.colorPanel.Size = new System.Drawing.Size(250, 241);
             this.colorPanel.TabIndex = 1;
@@ -113,7 +113,7 @@
             // 
             this.runningChk.AutoSize = true;
             this.runningChk.Location = new System.Drawing.Point(34, 59);
-            this.runningChk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.runningChk.Margin = new System.Windows.Forms.Padding(4);
             this.runningChk.Name = "runningChk";
             this.runningChk.Size = new System.Drawing.Size(85, 24);
             this.runningChk.TabIndex = 2;
@@ -126,7 +126,7 @@
             this.trayChk.Checked = true;
             this.trayChk.CheckState = System.Windows.Forms.CheckState.Checked;
             this.trayChk.Location = new System.Drawing.Point(34, 90);
-            this.trayChk.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.trayChk.Margin = new System.Windows.Forms.Padding(4);
             this.trayChk.Name = "trayChk";
             this.trayChk.Size = new System.Drawing.Size(139, 24);
             this.trayChk.TabIndex = 3;
@@ -137,7 +137,7 @@
             // 
             this.sleepTime.LargeChange = 500;
             this.sleepTime.Location = new System.Drawing.Point(34, 490);
-            this.sleepTime.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.sleepTime.Margin = new System.Windows.Forms.Padding(4);
             this.sleepTime.Maximum = 15000;
             this.sleepTime.Minimum = 200;
             this.sleepTime.Name = "sleepTime";
@@ -151,7 +151,7 @@
             // saveConfig
             // 
             this.saveConfig.Location = new System.Drawing.Point(1102, 518);
-            this.saveConfig.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.saveConfig.Margin = new System.Windows.Forms.Padding(4);
             this.saveConfig.Name = "saveConfig";
             this.saveConfig.Size = new System.Drawing.Size(164, 29);
             this.saveConfig.TabIndex = 6;
@@ -203,7 +203,7 @@
             // inputMQTTserver
             // 
             this.inputMQTTserver.Location = new System.Drawing.Point(274, 85);
-            this.inputMQTTserver.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTserver.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTserver.Name = "inputMQTTserver";
             this.inputMQTTserver.Size = new System.Drawing.Size(124, 27);
             this.inputMQTTserver.TabIndex = 11;
@@ -211,7 +211,7 @@
             // inputMQTTTopic
             // 
             this.inputMQTTTopic.Location = new System.Drawing.Point(274, 121);
-            this.inputMQTTTopic.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTTopic.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTTopic.Name = "inputMQTTTopic";
             this.inputMQTTTopic.Size = new System.Drawing.Size(124, 27);
             this.inputMQTTTopic.TabIndex = 12;
@@ -219,7 +219,7 @@
             // inputMQTTClientId
             // 
             this.inputMQTTClientId.Location = new System.Drawing.Point(274, 158);
-            this.inputMQTTClientId.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTClientId.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTClientId.Name = "inputMQTTClientId";
             this.inputMQTTClientId.Size = new System.Drawing.Size(124, 27);
             this.inputMQTTClientId.TabIndex = 13;
@@ -227,7 +227,7 @@
             // inputMQTTport
             // 
             this.inputMQTTport.Location = new System.Drawing.Point(274, 194);
-            this.inputMQTTport.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTport.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTport.Name = "inputMQTTport";
             this.inputMQTTport.Size = new System.Drawing.Size(124, 27);
             this.inputMQTTport.TabIndex = 14;
@@ -235,7 +235,7 @@
             // inputMQTTUsername
             // 
             this.inputMQTTUsername.Location = new System.Drawing.Point(274, 230);
-            this.inputMQTTUsername.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTUsername.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTUsername.Name = "inputMQTTUsername";
             this.inputMQTTUsername.Size = new System.Drawing.Size(124, 27);
             this.inputMQTTUsername.TabIndex = 15;
@@ -243,7 +243,7 @@
             // inputMQTTPassword
             // 
             this.inputMQTTPassword.Location = new System.Drawing.Point(274, 266);
-            this.inputMQTTPassword.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTPassword.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTPassword.Name = "inputMQTTPassword";
             this.inputMQTTPassword.PasswordChar = '*';
             this.inputMQTTPassword.Size = new System.Drawing.Size(124, 27);
@@ -254,7 +254,7 @@
             // 
             this.chkMQTTEnabled.AutoSize = true;
             this.chkMQTTEnabled.Location = new System.Drawing.Point(274, 54);
-            this.chkMQTTEnabled.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkMQTTEnabled.Margin = new System.Windows.Forms.Padding(4);
             this.chkMQTTEnabled.Name = "chkMQTTEnabled";
             this.chkMQTTEnabled.Size = new System.Drawing.Size(128, 24);
             this.chkMQTTEnabled.TabIndex = 17;
@@ -325,7 +325,7 @@
             // inputMQTTMessage
             // 
             this.inputMQTTMessage.Location = new System.Drawing.Point(430, 85);
-            this.inputMQTTMessage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputMQTTMessage.Margin = new System.Windows.Forms.Padding(4);
             this.inputMQTTMessage.Multiline = true;
             this.inputMQTTMessage.Name = "inputMQTTMessage";
             this.inputMQTTMessage.Size = new System.Drawing.Size(264, 209);
@@ -344,7 +344,7 @@
             // inputWebhook
             // 
             this.inputWebhook.Location = new System.Drawing.Point(32, 404);
-            this.inputWebhook.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputWebhook.Margin = new System.Windows.Forms.Padding(4);
             this.inputWebhook.Name = "inputWebhook";
             this.inputWebhook.Size = new System.Drawing.Size(530, 27);
             this.inputWebhook.TabIndex = 26;
@@ -363,7 +363,7 @@
             // 
             this.chkEnableWebhook.AutoSize = true;
             this.chkEnableWebhook.Location = new System.Drawing.Point(34, 350);
-            this.chkEnableWebhook.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkEnableWebhook.Margin = new System.Windows.Forms.Padding(4);
             this.chkEnableWebhook.Name = "chkEnableWebhook";
             this.chkEnableWebhook.Size = new System.Drawing.Size(152, 24);
             this.chkEnableWebhook.TabIndex = 28;
@@ -504,7 +504,7 @@
             // inputScreenMargin
             // 
             this.inputScreenMargin.Location = new System.Drawing.Point(34, 139);
-            this.inputScreenMargin.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.inputScreenMargin.Margin = new System.Windows.Forms.Padding(4);
             this.inputScreenMargin.Name = "inputScreenMargin";
             this.inputScreenMargin.Size = new System.Drawing.Size(124, 27);
             this.inputScreenMargin.TabIndex = 44;
@@ -523,7 +523,7 @@
             // 
             this.chkSkipDarkPixels.AutoSize = true;
             this.chkSkipDarkPixels.Location = new System.Drawing.Point(34, 179);
-            this.chkSkipDarkPixels.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.chkSkipDarkPixels.Margin = new System.Windows.Forms.Padding(4);
             this.chkSkipDarkPixels.Name = "chkSkipDarkPixels";
             this.chkSkipDarkPixels.Size = new System.Drawing.Size(134, 24);
             this.chkSkipDarkPixels.TabIndex = 46;
@@ -585,10 +585,10 @@
             this.Controls.Add(this.getColorNow);
             this.ForeColor = System.Drawing.SystemColors.ControlText;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.MaximizeBox = false;
             this.Name = "AmbientForm";
-            this.Text = "AmbientLight - v0.8";
+            this.Text = "AmbientLight - v0.85";
             ((System.ComponentModel.ISupportInitialize)(this.sleepTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
