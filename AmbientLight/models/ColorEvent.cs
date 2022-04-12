@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 namespace AmbientLight
 {
     internal class ColorEvent : EventArgs
-    {
+    {   
+        public Color color { get; set; }
         public ColorEvent(Color c)
         {
             this.color = c;
         }
-        public Color color { get; set; }
 
     }
 }

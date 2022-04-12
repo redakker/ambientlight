@@ -1,3 +1,4 @@
+using AmbientLight.models;
 using MQTTnet;
 using MQTTnet.Client.Options;
 using System.Diagnostics;
@@ -7,7 +8,7 @@ namespace AmbientLight
 {
     public partial class AmbientForm : Form
     {
-        Config config = null;
+        Config config;
         public event EventHandler colorGeneratedEvent;
         MQTTService mqttService = new MQTTService();
         WebhookService webhookService = new WebhookService();
@@ -30,13 +31,14 @@ namespace AmbientLight
             runningChk.Checked = config.isRunning;
             trayChk.Checked = config.minimizeToTray;
             loadMQTTSettings(config.mqtt);
-            loadWebhookSettings(config.webhook);
-            inputScreenMargin.Text = config.screenshotMargin.ToString();
+            loadWebhookSettings(config.webhook);            
             chkSkipDarkPixels.Checked = config.skipDarkPixels;
+            chkDivideScreen.Checked = config.divideScreen;            
+            inputSegmentNumberHorizontal.Text = config.segmentHorizontal.ToString();
+            inputSegmentNumberVertical.Text = config.segmentVertical.ToString();
 
-            displayFrequency();
-            visibleMQTTInputs();
-            visibleWebhhokInputs();
+            displayFrequency();            
+            setUI();
 
             // Event handling
             colorGeneratedEvent += ColorGeneratedEventHandler;
@@ -84,80 +86,55 @@ namespace AmbientLight
         /// </summary>
         private void startAnalyze()
         {
-            Bitmap screenshot = Utils.GetSreenshot(config);
-            
-            int red = 0;
-            int green = 0;
-            int blue = 0;
-            int allPixels = 0;
-            int darkPixels = 0;
-            int brightPixels = 0;
-            double calculatedRed;
-            double calculatedGreen;
-            double calculatedBlue;
-            int pixelJump = 10;            
+            Bitmap screenshot = Utils.GetSreenshot();
 
-            for (int h = 0; h < screenshot.Height; h+= pixelJump)
+            int segmentX = 0;
+            int segmentY = 0;
+            int segmentWidth = screenshot.Width;
+            int segmentHeight = screenshot.Height;
+
+            if (config.divideScreen)
             {
-                for (int w = 0; w < screenshot.Width; w+= pixelJump)
+                segmentX = 0;
+                segmentY = 0;
+                segmentWidth = (int) screenshot.Width / config.segmentHorizontal;
+                segmentHeight = (int)screenshot.Height / config.segmentVertical;
+
+                // Segment cannot be bigger then the screen size
+                if (segmentWidth > screenshot.Width) { segmentHeight = screenshot.Width; }
+                if (segmentHeight > screenshot.Height) { segmentHeight = screenshot.Height; }
+            }
+
+            for (var j = 0; j < screenshot.Height; j = j + segmentHeight)
+            {
+                for (var i = 0; i < screenshot.Width; i = i + segmentWidth)
                 {
-                    Color pixel = screenshot.GetPixel(w, h);
-
-                    int r = pixel.R;
-                    int g = pixel.G;
-                    int b = pixel.B;
-
-                    bool addPixel = false;
-                    if (config.skipDarkPixels)
-                    {
-                        if (r < Constants.DARK_PIXEL_LIMIT && g < Constants.DARK_PIXEL_LIMIT && b < Constants.DARK_PIXEL_LIMIT)
-                        {
-                            darkPixels++;
-                        } else
-                        {
-                            brightPixels++;
-                            addPixel = true;
-                        }
-
-                    } 
-                    
-
-                    if (!config.skipDarkPixels || addPixel)
-                    {
-                        // Mormal case, all pixel will be analized
-                        red += r;
-                        green += g;
-                        blue += b;
-                        allPixels++;
-                    }
-
+                    Rectangle screenP = new Rectangle(i, j, segmentWidth, segmentHeight);
+                    Bitmap segmentP = screenshot.Clone(screenP, screenshot.PixelFormat);
                 }
             }
 
-            if (allPixels == 0) { allPixels = 1; }
+            
+            Rectangle screenPart = new Rectangle(segmentX, segmentY, segmentWidth, segmentHeight);
+            Bitmap segmentPic = screenshot.Clone(screenPart, screenshot.PixelFormat);
+            
 
-            calculatedRed = (double)red / allPixels;
-            calculatedGreen = (double)green / allPixels;
-            calculatedBlue = (double)blue / allPixels;
+            Pixels pixels = new Pixels();
 
-            // Make darker color if most of the screen surface is black
-            if (brightPixels * 2 < darkPixels)
-            {
-                double ratio = (double)brightPixels / darkPixels;
-
-                calculatedRed = Convert.ToInt32(calculatedRed * ratio);
-                calculatedGreen = Convert.ToInt32(calculatedGreen * ratio);
-                calculatedBlue = Convert.ToInt32(calculatedBlue * ratio);
+            for (int h = 0; h < segmentHeight; h+= Constants.SKIP_PIXEL)
+            {   
+                for (int w = 0; w < segmentWidth; w+= Constants.SKIP_PIXEL)
+                {
+                    Color pixelColor = segmentPic.GetPixel(w, h);
+                    pixels.addPixel(pixelColor, config);
+                }
             }
 
-            Debug.WriteLine(calculatedRed + ", " + calculatedGreen + ", " + calculatedBlue);
-
-            Color c = Color.FromArgb((int)calculatedRed, (int)calculatedGreen, (int)calculatedBlue);
-
+            Color c = pixels.getAverageColor();
             string hex = ColorTranslator.ToHtml(c);
 
             Debug.WriteLine("Hex color " + hex);
-            Debug.WriteLine("RGB color " + (int)calculatedRed + ", " + (int)calculatedGreen + ", " + (int)calculatedBlue);
+            Debug.WriteLine("RGB color " + c.R + ", " + c.G + ", " + c.B);
             colorPanel.BackColor = c;
 
             Debug.WriteLine("Timeout:" + config.refreshFrequency);
@@ -228,26 +205,32 @@ namespace AmbientLight
         {
             config.refreshFrequency = sleepTime.Value;
             config.minimizeToTray = trayChk.Checked;
-            config.isRunning = runningChk.Checked;            
-
-            if (String.IsNullOrEmpty(inputScreenMargin.Text))
+            config.isRunning = runningChk.Checked;
+            config.mqtt = getMQTTSettings();
+            config.webhook = getWebhookSettings();
+            config.divideScreen = chkDivideScreen.Checked;
+            
+            
+            try
             {
-                config.screenshotMargin = 0;
-                inputScreenMargin.Text = "0";
+                config.segmentHorizontal = Int32.Parse(inputSegmentNumberHorizontal.Text);
+            }
+            catch
+            {
+                config.segmentHorizontal = Constants.DEFAULT_SEGMENT_NUMBER;
+                inputSegmentNumberHorizontal.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
             }
 
             try
             {
-                config.screenshotMargin = Int32.Parse(inputScreenMargin.Text);
+                config.segmentVertical = Int32.Parse(inputSegmentNumberVertical.Text);
             }
             catch
             {
-                config.screenshotMargin = 0;
-                inputScreenMargin.Text = "0";
+                config.segmentVertical = Constants.DEFAULT_SEGMENT_NUMBER;
+                inputSegmentNumberVertical.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
             }
 
-            config.mqtt = getMQTTSettings();
-            config.webhook = getWebhookSettings();
             Utils.ConfigToJson(this.config);
         }
 
@@ -332,41 +315,49 @@ namespace AmbientLight
             }
         }
 
-        private void visibleMQTTInputs()
-        {
-            bool enabled = chkMQTTEnabled.Checked;
+        private void setUI()
+        {   
+            
+            // Segment settings            
+            inputSegmentNumberHorizontal.Enabled = chkDivideScreen.Checked;
+            inputSegmentNumberVertical.Enabled = chkDivideScreen.Checked;
+            labelSegmentH.Enabled = chkDivideScreen.Checked;
+            labelSegmentV.Enabled = chkDivideScreen.Checked;
 
-            inputMQTTserver.Enabled = enabled;
-            inputMQTTTopic.Enabled = enabled;
-            inputMQTTClientId.Enabled = enabled;
+            // Webhook
+            inputWebhook.Enabled = chkEnableWebhook.Checked;
 
-            inputMQTTport.Enabled = enabled;
+            // MQTT
+            inputMQTTserver.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTTopic.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTClientId.Enabled = chkMQTTEnabled.Checked;
 
-            inputMQTTMessage.Enabled = enabled;
-            inputMQTTUsername.Enabled = enabled;
-            inputMQTTPassword.Enabled = enabled;
-        }
+            inputMQTTport.Enabled = chkMQTTEnabled.Checked;
 
-        private void visibleWebhhokInputs()
-        {
-            bool enabled = chkEnableWebhook.Checked;
-
-           inputWebhook.Enabled = enabled;
+            inputMQTTMessage.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTUsername.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTPassword.Enabled = chkMQTTEnabled.Checked;
         }
 
         private void chkMQTTEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            visibleMQTTInputs();
+            setUI();
         }
 
         private void chkEnableWebhook_CheckedChanged(object sender, EventArgs e)
         {
-            visibleWebhhokInputs();
+            setUI();
         }
 
         private void chkSkipDarkPixels_CheckedChanged(object sender, EventArgs e)
         {
             config.skipDarkPixels = chkSkipDarkPixels.Checked;
+        }
+
+        private void chkBorderOnly_CheckedChanged(object sender, EventArgs e)
+        {
+           config.divideScreen = chkDivideScreen.Checked;
+           setUI();
         }
     }
 }

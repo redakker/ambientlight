@@ -4,27 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AmbientLight
+namespace AmbientLight.models
 {
-    
-    public class Config
-    {
-        public int refreshFrequency { get; set; } = 500;
-
-        public bool minimizeToTray { get; set; } = true;
-
-        public bool isRunning { get; set; } = false;
-
-        public MQTT mqtt { get; set; }
-
-        public Webhook webhook { get; set; }
-
-        public int screenshotMargin { get; set; } = 0;
-
-        public bool skipDarkPixels { get; set; } = false;
-
-    }
-
     public class MQTT
     {
         public bool enabled { get; set; } = false;
@@ -37,5 +18,4 @@ namespace AmbientLight
         public string password { get; set; }
 
     }
-
 }

@@ -9,27 +9,13 @@ namespace AmbientLight
     {
         
 
-        public static Bitmap GetSreenshot(Config config)
+        public static Bitmap GetSreenshot()
         {
-            int margin = config.screenshotMargin;
-
-            Size s = new Size(margin, margin);
-
-            if (margin > Screen.PrimaryScreen.Bounds.Width)
-            {
-                margin = Screen.PrimaryScreen.Bounds.Width - 100;
-            }
-
-            if (margin > Screen.PrimaryScreen.Bounds.Height)
-            {
-                margin = Screen.PrimaryScreen.Bounds.Height - 100;
-            }
-
-            Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width - margin, Screen.PrimaryScreen.Bounds.Height - margin);
+            Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
             try
             {
                 Graphics g = Graphics.FromImage(bmp);
-                g.CopyFromScreen(Convert.ToInt32(margin / 2), Convert.ToInt32(margin / 2), 0, 0, bmp.Size);
+                g.CopyFromScreen(0, 0, 0, 0, bmp.Size);
 
                 // bmp.Save("screenshot.bmp");
             } catch

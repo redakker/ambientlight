@@ -12,6 +12,10 @@ namespace AmbientLight
         public const int DARK_PIXEL_LIMIT = 100;
         public const string CONFIG_DIR_NAME = "AmbientLight";
         public const string CONFIG_FILE_NAME = "config.json";
+        public const int SKIP_PIXEL = 10;
+
+        public const int DEFAULT_SEGMENT_NUMBER = 2;
+        public const int DEFAULT_BORDER_WIDTH = 150;
 
         public static readonly string configPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), CONFIG_DIR_NAME, CONFIG_FILE_NAME);
 
