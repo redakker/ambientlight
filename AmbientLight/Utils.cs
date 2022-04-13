@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using System.Text.Json;
+using AmbientLight.models;
 using Microsoft.Extensions.Configuration;
 
 namespace AmbientLight
@@ -24,6 +25,27 @@ namespace AmbientLight
             }
 
             return bmp;
+        }
+
+        public static Color getPictureAverageColor(Bitmap picture, Config config)
+        {
+            Pixels pixels = new Pixels();
+
+            for (int h = 0; h < picture.Height; h += Constants.SKIP_PIXEL)
+            {
+                for (int w = 0; w < picture.Width; w += Constants.SKIP_PIXEL)
+                {
+                    Color pixelColor = picture.GetPixel(w, h);
+                    pixels.addPixel(pixelColor, config);
+                }
+            }
+
+            Color c = pixels.getAverageColor();
+            string hex = ColorTranslator.ToHtml(c);
+
+            Debug.WriteLine("Hex color " + hex);
+            Debug.WriteLine("RGB color " + c.R + ", " + c.G + ", " + c.B);
+            return c;
         }
 
 
@@ -88,13 +110,13 @@ namespace AmbientLight
             File.WriteAllText(Constants.configPath, json);
         }
 
-        public static string replaceWildCards(string text, Color color)
+        public static string replaceWildCards(string text, ScreenColor screenColor)
         {
-            text = text.Replace(WildCards.R, color.R.ToString());
-            text = text.Replace(WildCards.G, color.G.ToString());
-            text = text.Replace(WildCards.B, color.B.ToString());
+            text = text.Replace(WildCards.R, screenColor.mainColor.R.ToString());
+            text = text.Replace(WildCards.G, screenColor.mainColor.G.ToString());
+            text = text.Replace(WildCards.B, screenColor.mainColor.B.ToString());
 
-            text = text.Replace(WildCards.HEX, ColorTranslator.ToHtml(color));
+            text = text.Replace(WildCards.HEX, ColorTranslator.ToHtml(screenColor.mainColor));
 
             return text;
         }

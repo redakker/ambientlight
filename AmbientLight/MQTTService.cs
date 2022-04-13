@@ -1,4 +1,5 @@
-﻿using MQTTnet;
+﻿using AmbientLight.models;
+using MQTTnet;
 using MQTTnet.Client;
 using MQTTnet.Client.Options;
 using System;
@@ -38,13 +39,13 @@ namespace AmbientLight
             }
         }
 
-        public async void sendMessage(Config config, Color color)
+        public async void sendMessage(Config config, ScreenColor screenColor)
         {
             if (mqttClient.IsConnected)
             {
                 var applicationMessage = new MqttApplicationMessageBuilder()
                     .WithTopic(config.mqtt.topic)
-                    .WithPayload(Utils.replaceWildCards(config.mqtt.message, color))
+                    .WithPayload(Utils.replaceWildCards(config.mqtt.message, screenColor))
                     .Build();
 
                 await mqttClient.PublishAsync(applicationMessage, CancellationToken.None);

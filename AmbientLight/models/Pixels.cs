@@ -44,6 +44,11 @@ namespace AmbientLight.models
                 allPixels++;
             }
         }
+        public Color getAverageColor()
+        {
+            RGB avgRGB = getAverageRGB();
+            return Color.FromArgb(avgRGB.red, avgRGB.green, avgRGB.blue);
+        }
 
         public RGB getAverageRGB()
         {
@@ -77,13 +82,5 @@ namespace AmbientLight.models
                 blue = (int) calculatedBlue
             };
         }
-
-        public Color getAverageColor()
-        {
-            RGB avgRGB = getAverageRGB();
-            return Color.FromArgb(avgRGB.red, avgRGB.green, avgRGB.blue);
-        }
-
-
     }
 }

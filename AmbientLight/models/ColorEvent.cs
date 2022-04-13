@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmbientLight.models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,10 +9,10 @@ namespace AmbientLight
 {
     internal class ColorEvent : EventArgs
     {   
-        public Color color { get; set; }
-        public ColorEvent(Color c)
+        public ScreenColor screenColor { get; set; }
+        public ColorEvent(ScreenColor c)
         {
-            this.color = c;
+            this.screenColor = c;
         }
 
     }

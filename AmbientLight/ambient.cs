@@ -25,18 +25,9 @@ namespace AmbientLight
             Thread background = new Thread(startAnalyzeInBackground);
             background.IsBackground = true;
             background.Start();
-            
-            // Set the config values on the UI
-            sleepTime.Value = config.refreshFrequency;
-            runningChk.Checked = config.isRunning;
-            trayChk.Checked = config.minimizeToTray;
-            loadMQTTSettings(config.mqtt);
-            loadWebhookSettings(config.webhook);            
-            chkSkipDarkPixels.Checked = config.skipDarkPixels;
-            chkDivideScreen.Checked = config.divideScreen;            
-            inputSegmentNumberHorizontal.Text = config.segmentHorizontal.ToString();
-            inputSegmentNumberVertical.Text = config.segmentVertical.ToString();
 
+
+            setConfigValues(config);
             displayFrequency();            
             setUI();
 
@@ -46,21 +37,72 @@ namespace AmbientLight
 
         private async void ColorGeneratedEventHandler(object? sender, EventArgs e)
         {
-            // We expecting a ColorEvent here
+            // We expecting a ScreenColorEvent here
             ColorEvent colorEvent = (ColorEvent) e;
 
-            string hex = Utils.replaceWildCards("{HEX}", colorEvent.color);
+            string hex = Utils.replaceWildCards("{HEX}", colorEvent.screenColor);
+
+            colorPanel.BackColor = colorEvent.screenColor.mainColor;
 
             if (lastColor != hex)
             {
                 Debug.WriteLine("Sending color...");
                 lastColor = hex;
-                await sendMQTT(colorEvent.color);
-                await callWebhook(colorEvent.color);
+                await sendMQTT(colorEvent.screenColor);
+                await callWebhook(colorEvent.screenColor);
 
                 // Update the wildcards' value in the view
                 // updateWildcards(colorEvent.color);
             }
+        }
+
+        private void setConfigValues(Config config)
+        {
+            // Set the config values on the UI
+            sleepTime.Value = config.refreshFrequency;
+            runningChk.Checked = config.isRunning;
+            trayChk.Checked = config.minimizeToTray;
+            loadMQTTSettings(config.mqtt);
+            loadWebhookSettings(config.webhook);
+            chkSkipDarkPixels.Checked = config.skipDarkPixels;            
+            inputSegmentNumberHorizontal.Text = config.segmentHorizontal.ToString();
+            inputSegmentNumberVertical.Text = config.segmentVertical.ToString();
+            inputDataType.Text = config.webhook.HTTPDataType;
+            inputHTTPMessage.Text = config.webhook.PostBody;
+        }
+        private void setUI()
+        {
+            // Webhook
+
+            if (comboHTTPMethod.SelectedIndex == (int)Webhook.Method.GET)
+            {
+                inputHTTPMessage.Enabled = false;
+                inputDataType.Enabled = false;
+            }
+
+            if (comboHTTPMethod.SelectedIndex == (int)Webhook.Method.POST)
+            {
+                inputHTTPMessage.Enabled = true;
+                inputDataType.Enabled = true;
+            }
+
+            inputWebhook.Enabled = chkEnableWebhook.Checked;
+            inputHTTPMessage.Enabled = chkEnableWebhook.Checked;
+            inputDataType.Enabled = chkEnableWebhook.Checked;
+            comboHTTPMethod.Enabled = chkEnableWebhook.Checked;
+
+            
+
+            // MQTT
+            inputMQTTserver.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTTopic.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTClientId.Enabled = chkMQTTEnabled.Checked;
+
+            inputMQTTport.Enabled = chkMQTTEnabled.Checked;
+
+            inputMQTTMessage.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTUsername.Enabled = chkMQTTEnabled.Checked;
+            inputMQTTPassword.Enabled = chkMQTTEnabled.Checked;
         }
 
         private void frequencyChanged(object sender, System.EventArgs e)
@@ -87,65 +129,56 @@ namespace AmbientLight
         private void startAnalyze()
         {
             Bitmap screenshot = Utils.GetSreenshot();
+            ScreenColor screenColor = new ScreenColor();
 
+            // First of all calculate the color for the whole screen
+            Rectangle screen = new Rectangle(0, 0, screenshot.Width, screenshot.Height);
+            Bitmap wholeScreen = screenshot.Clone(screen, screenshot.PixelFormat);
+            Color mainColor = Utils.getPictureAverageColor(wholeScreen, config);
+            screenColor.mainColor = mainColor;
+
+
+            // Then divide the screen and calculate the segments
             int segmentX = 0;
             int segmentY = 0;
-            int segmentWidth = screenshot.Width;
-            int segmentHeight = screenshot.Height;
+            int segmentWidth = 0;
+            int segmentHeight = 0;
 
-            if (config.divideScreen)
-            {
-                segmentX = 0;
-                segmentY = 0;
-                segmentWidth = (int) screenshot.Width / config.segmentHorizontal;
-                segmentHeight = (int)screenshot.Height / config.segmentVertical;
+            
+            segmentX = 0;
+            segmentY = 0;
+            segmentWidth = (int) screenshot.Width / config.segmentHorizontal;
+            segmentHeight = (int)screenshot.Height / config.segmentVertical;
 
-                // Segment cannot be bigger then the screen size
-                if (segmentWidth > screenshot.Width) { segmentHeight = screenshot.Width; }
-                if (segmentHeight > screenshot.Height) { segmentHeight = screenshot.Height; }
-            }
+            // Segment cannot be bigger then the screen size
+            if (segmentWidth > screenshot.Width) { segmentHeight = screenshot.Width; }
+            if (segmentHeight > screenshot.Height) { segmentHeight = screenshot.Height; }
+            
 
             for (var j = 0; j < screenshot.Height; j = j + segmentHeight)
             {
                 for (var i = 0; i < screenshot.Width; i = i + segmentWidth)
                 {
                     Rectangle screenP = new Rectangle(i, j, segmentWidth, segmentHeight);
-                    Bitmap segmentP = screenshot.Clone(screenP, screenshot.PixelFormat);
+                    Bitmap segmentP = screenshot.Clone(screenP, screenshot.PixelFormat);                    
                 }
             }
 
             
             Rectangle screenPart = new Rectangle(segmentX, segmentY, segmentWidth, segmentHeight);
             Bitmap segmentPic = screenshot.Clone(screenPart, screenshot.PixelFormat);
-            
 
-            Pixels pixels = new Pixels();
-
-            for (int h = 0; h < segmentHeight; h+= Constants.SKIP_PIXEL)
-            {   
-                for (int w = 0; w < segmentWidth; w+= Constants.SKIP_PIXEL)
-                {
-                    Color pixelColor = segmentPic.GetPixel(w, h);
-                    pixels.addPixel(pixelColor, config);
-                }
-            }
-
-            Color c = pixels.getAverageColor();
-            string hex = ColorTranslator.ToHtml(c);
-
-            Debug.WriteLine("Hex color " + hex);
-            Debug.WriteLine("RGB color " + c.R + ", " + c.G + ", " + c.B);
-            colorPanel.BackColor = c;
+            Color c = Utils.getPictureAverageColor(screenshot, config);
 
             Debug.WriteLine("Timeout:" + config.refreshFrequency);
 
-            colorGeneratedEvent.Invoke(this, new ColorEvent(c));
+            colorGeneratedEvent.Invoke(this, new ColorEvent(screenColor));
 
             // Otherwise the memory consumption is high till the normal GC running
             System.GC.Collect();
         }
 
-        private async Task sendMQTT(Color color)
+        private async Task sendMQTT(ScreenColor color)
         {
             if (config.mqtt != null && config.mqtt.enabled)
             {
@@ -157,23 +190,25 @@ namespace AmbientLight
             }
         }
 
-        private async Task callWebhook(Color color)
+        private async Task callWebhook(ScreenColor screenColor)
         {
             if (config.webhook != null && config.webhook.enabled)
             {
                 if (!String.IsNullOrEmpty(config.webhook.url))
                 {
-                    webhookService.callWebhook(config, color);
+                    webhookService.callWebhook(config, screenColor);
                 }
             }
         }
 
-        private void updateWildcards(Color color)
+        private void updateWildcards(ScreenColor screenColor)
         {
+            /*
             string R = Utils.replaceWildCards("{R}", color);
             string G = Utils.replaceWildCards("{G}", color);
             string B = Utils.replaceWildCards("{B}", color);
             string HEX = Utils.replaceWildCards("{HEX}", color);
+            */
         }
 
         private void getColorNow_Click(object sender, EventArgs e)
@@ -201,37 +236,9 @@ namespace AmbientLight
             }
         }
 
-        private void saveConfig_Click(object sender, EventArgs e)
+        private void buttonSaveConfig_Click(object sender, EventArgs e)
         {
-            config.refreshFrequency = sleepTime.Value;
-            config.minimizeToTray = trayChk.Checked;
-            config.isRunning = runningChk.Checked;
-            config.mqtt = getMQTTSettings();
-            config.webhook = getWebhookSettings();
-            config.divideScreen = chkDivideScreen.Checked;
-            
-            
-            try
-            {
-                config.segmentHorizontal = Int32.Parse(inputSegmentNumberHorizontal.Text);
-            }
-            catch
-            {
-                config.segmentHorizontal = Constants.DEFAULT_SEGMENT_NUMBER;
-                inputSegmentNumberHorizontal.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
-            }
-
-            try
-            {
-                config.segmentVertical = Int32.Parse(inputSegmentNumberVertical.Text);
-            }
-            catch
-            {
-                config.segmentVertical = Constants.DEFAULT_SEGMENT_NUMBER;
-                inputSegmentNumberVertical.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
-            }
-
-            Utils.ConfigToJson(this.config);
+            saveConfig();
         }
 
         private void displayFrequency()
@@ -255,6 +262,7 @@ namespace AmbientLight
             try
             {
                 mqtt.port = Int32.Parse(inputMQTTport.Text);
+                if (mqtt.port < 1) { mqtt.port = 1; }
             } catch { 
                 mqtt.port = Constants.MQTT_DEFAULT_PORT; 
                 inputMQTTport.Text = Constants.MQTT_DEFAULT_PORT.ToString();
@@ -302,6 +310,9 @@ namespace AmbientLight
                         
             webhook.url = inputWebhook.Text;
             webhook.enabled = chkEnableWebhook.Checked;
+            webhook.HTTPMethod = (Webhook.Method) comboHTTPMethod.SelectedIndex;
+            webhook.PostBody = inputHTTPMessage.Text;
+            webhook.HTTPDataType = inputDataType.Text;
 
             return webhook;
         }
@@ -312,31 +323,43 @@ namespace AmbientLight
             {
                 inputWebhook.Text = webhook.url;
                 chkEnableWebhook.Checked = webhook.enabled;
+                comboHTTPMethod.SelectedIndex = (int) webhook.HTTPMethod;
             }
         }
 
-        private void setUI()
-        {   
-            
-            // Segment settings            
-            inputSegmentNumberHorizontal.Enabled = chkDivideScreen.Checked;
-            inputSegmentNumberVertical.Enabled = chkDivideScreen.Checked;
-            labelSegmentH.Enabled = chkDivideScreen.Checked;
-            labelSegmentV.Enabled = chkDivideScreen.Checked;
+        private void saveConfig()
+        {
+            config.refreshFrequency = sleepTime.Value;
+            config.minimizeToTray = trayChk.Checked;
+            config.isRunning = runningChk.Checked;
+            config.mqtt = getMQTTSettings();
+            config.webhook = getWebhookSettings();
 
-            // Webhook
-            inputWebhook.Enabled = chkEnableWebhook.Checked;
+            try
+            {
+                config.segmentHorizontal = Int32.Parse(inputSegmentNumberHorizontal.Text);
+                if (config.segmentHorizontal < 1) { config.segmentHorizontal = 1; }
+            }
+            catch
+            {
+                config.segmentHorizontal = Constants.DEFAULT_SEGMENT_NUMBER;
+                inputSegmentNumberHorizontal.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
+            }
 
-            // MQTT
-            inputMQTTserver.Enabled = chkMQTTEnabled.Checked;
-            inputMQTTTopic.Enabled = chkMQTTEnabled.Checked;
-            inputMQTTClientId.Enabled = chkMQTTEnabled.Checked;
+            try
+            {
+                config.segmentVertical = Int32.Parse(inputSegmentNumberVertical.Text);
+                if (config.segmentVertical < 1) { config.segmentVertical = 1; }
+            }
+            catch
+            {
+                config.segmentVertical = Constants.DEFAULT_SEGMENT_NUMBER;
+                inputSegmentNumberVertical.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
+            }
 
-            inputMQTTport.Enabled = chkMQTTEnabled.Checked;
-
-            inputMQTTMessage.Enabled = chkMQTTEnabled.Checked;
-            inputMQTTUsername.Enabled = chkMQTTEnabled.Checked;
-            inputMQTTPassword.Enabled = chkMQTTEnabled.Checked;
+            Utils.ConfigToJson(this.config);
+            // Just for sure
+            setConfigValues(config);
         }
 
         private void chkMQTTEnabled_CheckedChanged(object sender, EventArgs e)
@@ -354,10 +377,26 @@ namespace AmbientLight
             config.skipDarkPixels = chkSkipDarkPixels.Checked;
         }
 
-        private void chkBorderOnly_CheckedChanged(object sender, EventArgs e)
+        private void comboHTTPMethod_SelectedIndexChanged(object sender, EventArgs e)
         {
-           config.divideScreen = chkDivideScreen.Checked;
-           setUI();
+            setUI();
+        }
+
+        private void buttonStart_Click(object sender, EventArgs e)
+        {
+            if (config.isRunning)
+            {
+                config.isRunning = false;
+                runningChk.Checked = false;
+                saveConfig();
+                buttonStart.Text = "Save and start";
+            } else
+            {
+                config.isRunning = true;
+                runningChk.Checked = true;
+                saveConfig();
+                buttonStart.Text = "Stop";
+            }
         }
     }
 }

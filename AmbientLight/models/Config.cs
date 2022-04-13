@@ -16,9 +16,8 @@ namespace AmbientLight
         public MQTT mqtt { get; set; }
         public Webhook webhook { get; set; }
         public bool skipDarkPixels { get; set; } = false;
-        public bool skipCenter { get; set; } = false;
-        public bool divideScreen { get; set; } = false;        
+        public bool skipCenter { get; set; } = false;        
         public int segmentHorizontal { get; set; } = Constants.DEFAULT_SEGMENT_NUMBER;
-        public int segmentVertical { get; set; } = Constants.DEFAULT_SEGMENT_NUMBER;
+        public int segmentVertical { get; set; } = Constants.DEFAULT_SEGMENT_NUMBER;       
     }
 }

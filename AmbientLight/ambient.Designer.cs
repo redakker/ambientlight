@@ -36,7 +36,7 @@
             this.runningChk = new System.Windows.Forms.CheckBox();
             this.trayChk = new System.Windows.Forms.CheckBox();
             this.sleepTime = new System.Windows.Forms.TrackBar();
-            this.saveConfig = new System.Windows.Forms.Button();
+            this.buttonSaveConfig = new System.Windows.Forms.Button();
             this.calculatedColor = new System.Windows.Forms.Label();
             this.labelOptions = new System.Windows.Forms.Label();
             this.labelCalculation = new System.Windows.Forms.Label();
@@ -73,11 +73,19 @@
             this.labelBlue = new System.Windows.Forms.Label();
             this.labelHEX = new System.Windows.Forms.Label();
             this.chkSkipDarkPixels = new System.Windows.Forms.CheckBox();
-            this.chkDivideScreen = new System.Windows.Forms.CheckBox();
             this.labelSegmentH = new System.Windows.Forms.Label();
             this.inputSegmentNumberHorizontal = new System.Windows.Forms.TextBox();
             this.inputSegmentNumberVertical = new System.Windows.Forms.TextBox();
             this.labelSegmentV = new System.Windows.Forms.Label();
+            this.inputHTTPMessage = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.comboHTTPMethod = new System.Windows.Forms.ComboBox();
+            this.inputDataType = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.label20 = new System.Windows.Forms.Label();
+            this.tableLayoutColors = new System.Windows.Forms.TableLayoutPanel();
+            this.label21 = new System.Windows.Forms.Label();
+            this.buttonStart = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -92,7 +100,7 @@
             // 
             // getColorNow
             // 
-            this.getColorNow.Location = new System.Drawing.Point(813, 251);
+            this.getColorNow.Location = new System.Drawing.Point(595, 251);
             this.getColorNow.Name = "getColorNow";
             this.getColorNow.Size = new System.Drawing.Size(200, 25);
             this.getColorNow.TabIndex = 0;
@@ -105,7 +113,7 @@
             this.colorPanel.BackColor = System.Drawing.SystemColors.Menu;
             this.colorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.colorPanel.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.colorPanel.Location = new System.Drawing.Point(813, 43);
+            this.colorPanel.Location = new System.Drawing.Point(595, 43);
             this.colorPanel.Name = "colorPanel";
             this.colorPanel.Size = new System.Drawing.Size(200, 193);
             this.colorPanel.TabIndex = 1;
@@ -135,7 +143,7 @@
             // sleepTime
             // 
             this.sleepTime.LargeChange = 500;
-            this.sleepTime.Location = new System.Drawing.Point(27, 392);
+            this.sleepTime.Location = new System.Drawing.Point(27, 532);
             this.sleepTime.Maximum = 15000;
             this.sleepTime.Minimum = 200;
             this.sleepTime.Name = "sleepTime";
@@ -146,24 +154,24 @@
             this.sleepTime.Value = 200;
             this.sleepTime.ValueChanged += new System.EventHandler(this.frequencyChanged);
             // 
-            // saveConfig
+            // buttonSaveConfig
             // 
-            this.saveConfig.Location = new System.Drawing.Point(882, 414);
-            this.saveConfig.Name = "saveConfig";
-            this.saveConfig.Size = new System.Drawing.Size(131, 23);
-            this.saveConfig.TabIndex = 6;
-            this.saveConfig.Text = "Apply configuration";
-            this.saveConfig.UseVisualStyleBackColor = true;
-            this.saveConfig.Click += new System.EventHandler(this.saveConfig_Click);
+            this.buttonSaveConfig.Location = new System.Drawing.Point(909, 554);
+            this.buttonSaveConfig.Name = "buttonSaveConfig";
+            this.buttonSaveConfig.Size = new System.Drawing.Size(131, 23);
+            this.buttonSaveConfig.TabIndex = 6;
+            this.buttonSaveConfig.Text = "Apply configuration";
+            this.buttonSaveConfig.UseVisualStyleBackColor = true;
+            this.buttonSaveConfig.Click += new System.EventHandler(this.buttonSaveConfig_Click);
             // 
             // calculatedColor
             // 
             this.calculatedColor.AutoSize = true;
-            this.calculatedColor.Location = new System.Drawing.Point(813, 20);
+            this.calculatedColor.Location = new System.Drawing.Point(572, 20);
             this.calculatedColor.Name = "calculatedColor";
-            this.calculatedColor.Size = new System.Drawing.Size(96, 15);
+            this.calculatedColor.Size = new System.Drawing.Size(206, 15);
             this.calculatedColor.TabIndex = 7;
-            this.calculatedColor.Text = "Calculated color:";
+            this.calculatedColor.Text = "Calculated color for the whole screen:";
             // 
             // labelOptions
             // 
@@ -177,7 +185,7 @@
             // labelCalculation
             // 
             this.labelCalculation.AutoSize = true;
-            this.labelCalculation.Location = new System.Drawing.Point(11, 367);
+            this.labelCalculation.Location = new System.Drawing.Point(11, 514);
             this.labelCalculation.Name = "labelCalculation";
             this.labelCalculation.Size = new System.Drawing.Size(126, 15);
             this.labelCalculation.TabIndex = 9;
@@ -186,7 +194,7 @@
             // calculationFrequencyNumber
             // 
             this.calculationFrequencyNumber.AutoSize = true;
-            this.calculationFrequencyNumber.Location = new System.Drawing.Point(724, 367);
+            this.calculationFrequencyNumber.Location = new System.Drawing.Point(724, 514);
             this.calculationFrequencyNumber.Name = "calculationFrequencyNumber";
             this.calculationFrequencyNumber.Size = new System.Drawing.Size(23, 15);
             this.calculationFrequencyNumber.TabIndex = 10;
@@ -323,7 +331,7 @@
             // 
             this.inputWebhook.Location = new System.Drawing.Point(26, 323);
             this.inputWebhook.Name = "inputWebhook";
-            this.inputWebhook.Size = new System.Drawing.Size(425, 23);
+            this.inputWebhook.Size = new System.Drawing.Size(550, 23);
             this.inputWebhook.TabIndex = 26;
             // 
             // label8
@@ -367,7 +375,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(585, 44);
+            this.label11.Location = new System.Drawing.Point(808, 20);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(115, 15);
             this.label11.TabIndex = 32;
@@ -376,7 +384,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(596, 99);
+            this.label12.Location = new System.Drawing.Point(819, 75);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(30, 15);
             this.label12.TabIndex = 33;
@@ -385,7 +393,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(596, 119);
+            this.label13.Location = new System.Drawing.Point(819, 95);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(41, 15);
             this.label13.TabIndex = 34;
@@ -394,7 +402,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(596, 138);
+            this.label14.Location = new System.Drawing.Point(819, 114);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(33, 15);
             this.label14.TabIndex = 35;
@@ -403,7 +411,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(596, 157);
+            this.label15.Location = new System.Drawing.Point(819, 133);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(60, 15);
             this.label15.TabIndex = 36;
@@ -412,7 +420,7 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(592, 181);
+            this.label16.Location = new System.Drawing.Point(815, 157);
             this.label16.Name = "label16";
             this.label16.Size = new System.Drawing.Size(221, 15);
             this.label16.TabIndex = 37;
@@ -421,7 +429,7 @@
             // label17
             // 
             this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(642, 199);
+            this.label17.Location = new System.Drawing.Point(865, 175);
             this.label17.Name = "label17";
             this.label17.Size = new System.Drawing.Size(125, 15);
             this.label17.TabIndex = 38;
@@ -430,7 +438,7 @@
             // labelRed
             // 
             this.labelRed.AutoSize = true;
-            this.labelRed.Location = new System.Drawing.Point(673, 99);
+            this.labelRed.Location = new System.Drawing.Point(896, 75);
             this.labelRed.Name = "labelRed";
             this.labelRed.Size = new System.Drawing.Size(22, 15);
             this.labelRed.TabIndex = 39;
@@ -439,7 +447,7 @@
             // labelGreen
             // 
             this.labelGreen.AutoSize = true;
-            this.labelGreen.Location = new System.Drawing.Point(673, 119);
+            this.labelGreen.Location = new System.Drawing.Point(896, 95);
             this.labelGreen.Name = "labelGreen";
             this.labelGreen.Size = new System.Drawing.Size(23, 15);
             this.labelGreen.TabIndex = 40;
@@ -448,7 +456,7 @@
             // labelBlue
             // 
             this.labelBlue.AutoSize = true;
-            this.labelBlue.Location = new System.Drawing.Point(673, 138);
+            this.labelBlue.Location = new System.Drawing.Point(896, 114);
             this.labelBlue.Name = "labelBlue";
             this.labelBlue.Size = new System.Drawing.Size(22, 15);
             this.labelBlue.TabIndex = 41;
@@ -457,7 +465,7 @@
             // labelHEX
             // 
             this.labelHEX.AutoSize = true;
-            this.labelHEX.Location = new System.Drawing.Point(673, 157);
+            this.labelHEX.Location = new System.Drawing.Point(896, 133);
             this.labelHEX.Name = "labelHEX";
             this.labelHEX.Size = new System.Drawing.Size(37, 15);
             this.labelHEX.TabIndex = 42;
@@ -473,17 +481,6 @@
             this.chkSkipDarkPixels.Text = "Skip dark pixels";
             this.chkSkipDarkPixels.UseVisualStyleBackColor = true;
             this.chkSkipDarkPixels.CheckedChanged += new System.EventHandler(this.chkSkipDarkPixels_CheckedChanged);
-            // 
-            // chkDivideScreen
-            // 
-            this.chkDivideScreen.AutoSize = true;
-            this.chkDivideScreen.Location = new System.Drawing.Point(27, 118);
-            this.chkDivideScreen.Name = "chkDivideScreen";
-            this.chkDivideScreen.Size = new System.Drawing.Size(97, 19);
-            this.chkDivideScreen.TabIndex = 52;
-            this.chkDivideScreen.Text = "Divide Screen";
-            this.chkDivideScreen.UseVisualStyleBackColor = true;
-            this.chkDivideScreen.CheckedChanged += new System.EventHandler(this.chkBorderOnly_CheckedChanged);
             // 
             // labelSegmentH
             // 
@@ -517,6 +514,106 @@
             this.labelSegmentV.TabIndex = 58;
             this.labelSegmentV.Text = "Segments V";
             // 
+            // inputHTTPMessage
+            // 
+            this.inputHTTPMessage.Location = new System.Drawing.Point(381, 389);
+            this.inputHTTPMessage.Multiline = true;
+            this.inputHTTPMessage.Name = "inputHTTPMessage";
+            this.inputHTTPMessage.Size = new System.Drawing.Size(195, 118);
+            this.inputHTTPMessage.TabIndex = 59;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Location = new System.Drawing.Point(379, 368);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(68, 15);
+            this.label18.TabIndex = 60;
+            this.label18.Text = "POST body:";
+            // 
+            // comboHTTPMethod
+            // 
+            this.comboHTTPMethod.FormattingEnabled = true;
+            this.comboHTTPMethod.Items.AddRange(new object[] {
+            "GET",
+            "POST"});
+            this.comboHTTPMethod.Location = new System.Drawing.Point(184, 389);
+            this.comboHTTPMethod.Name = "comboHTTPMethod";
+            this.comboHTTPMethod.Size = new System.Drawing.Size(191, 23);
+            this.comboHTTPMethod.TabIndex = 61;
+            this.comboHTTPMethod.Tag = "";
+            this.comboHTTPMethod.SelectedIndexChanged += new System.EventHandler(this.comboHTTPMethod_SelectedIndexChanged);
+            // 
+            // inputDataType
+            // 
+            this.inputDataType.Location = new System.Drawing.Point(184, 418);
+            this.inputDataType.Name = "inputDataType";
+            this.inputDataType.Size = new System.Drawing.Size(191, 23);
+            this.inputDataType.TabIndex = 62;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Location = new System.Drawing.Point(123, 422);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(60, 15);
+            this.label19.TabIndex = 63;
+            this.label19.Text = "Data type:";
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Location = new System.Drawing.Point(130, 392);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(52, 15);
+            this.label20.TabIndex = 64;
+            this.label20.Text = "Method:";
+            // 
+            // tableLayoutColors
+            // 
+            this.tableLayoutColors.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
+            this.tableLayoutColors.ColumnCount = 1;
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.Location = new System.Drawing.Point(595, 283);
+            this.tableLayoutColors.Name = "tableLayoutColors";
+            this.tableLayoutColors.RowCount = 1;
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
+            this.tableLayoutColors.Size = new System.Drawing.Size(445, 224);
+            this.tableLayoutColors.TabIndex = 65;
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(24, 122);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(80, 15);
+            this.label21.TabIndex = 66;
+            this.label21.Text = "Divide screen:";
+            // 
+            // buttonStart
+            // 
+            this.buttonStart.Location = new System.Drawing.Point(808, 554);
+            this.buttonStart.Name = "buttonStart";
+            this.buttonStart.Size = new System.Drawing.Size(95, 23);
+            this.buttonStart.TabIndex = 67;
+            this.buttonStart.Text = "Save and start";
+            this.buttonStart.UseVisualStyleBackColor = true;
+            this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
+            // 
             // AmbientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -524,12 +621,20 @@
             this.AutoScroll = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1026, 457);
+            this.ClientSize = new System.Drawing.Size(1052, 590);
+            this.Controls.Add(this.buttonStart);
+            this.Controls.Add(this.label21);
+            this.Controls.Add(this.tableLayoutColors);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.inputDataType);
+            this.Controls.Add(this.comboHTTPMethod);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.inputHTTPMessage);
             this.Controls.Add(this.labelSegmentV);
             this.Controls.Add(this.inputSegmentNumberVertical);
             this.Controls.Add(this.inputSegmentNumberHorizontal);
             this.Controls.Add(this.labelSegmentH);
-            this.Controls.Add(this.chkDivideScreen);
             this.Controls.Add(this.chkSkipDarkPixels);
             this.Controls.Add(this.labelHEX);
             this.Controls.Add(this.labelBlue);
@@ -566,7 +671,7 @@
             this.Controls.Add(this.labelCalculation);
             this.Controls.Add(this.labelOptions);
             this.Controls.Add(this.calculatedColor);
-            this.Controls.Add(this.saveConfig);
+            this.Controls.Add(this.buttonSaveConfig);
             this.Controls.Add(this.sleepTime);
             this.Controls.Add(this.trayChk);
             this.Controls.Add(this.runningChk);
@@ -591,7 +696,7 @@
         private CheckBox runningChk;
         private CheckBox trayChk;
         private TrackBar sleepTime;
-        private Button saveConfig;
+        private Button buttonSaveConfig;
         private Label calculatedColor;
         private Label labelOptions;
         private Label labelCalculation;
@@ -629,10 +734,18 @@
         private Label labelHEX;
         private CheckBox chkSkipDarkPixels;
         private CheckBox chkSkipBrightPixels;
-        private CheckBox chkDivideScreen;
         private Label labelSegmentH;
         private TextBox inputSegmentNumberHorizontal;
         private TextBox inputSegmentNumberVertical;
         private Label labelSegmentV;
+        private TextBox inputHTTPMessage;
+        private Label label18;
+        private ComboBox comboHTTPMethod;
+        private TextBox inputDataType;
+        private Label label19;
+        private Label label20;
+        private TableLayoutPanel tableLayoutColors;
+        private Label label21;
+        private Button buttonStart;
     }
 }
