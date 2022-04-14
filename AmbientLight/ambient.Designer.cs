@@ -89,6 +89,7 @@ namespace AmbientLight
             this.buttonStart = new System.Windows.Forms.Button();
             this.label22 = new System.Windows.Forms.Label();
             this.label23 = new System.Windows.Forms.Label();
+            this.linkLabel = new System.Windows.Forms.LinkLabel();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -630,6 +631,18 @@ namespace AmbientLight
             this.label23.TabIndex = 69;
             this.label23.Text = "Post JSON example:\r\n{\r\n\"segment1_HEX\" : \"{HEX1}\",\r\n\"segment8_R\" : \"{R8}\"\r\n}\r\n";
             // 
+            // linkLabel
+            // 
+            this.linkLabel.AutoSize = true;
+            this.linkLabel.LinkColor = System.Drawing.Color.Firebrick;
+            this.linkLabel.Location = new System.Drawing.Point(11, 568);
+            this.linkLabel.Name = "linkLabel";
+            this.linkLabel.Size = new System.Drawing.Size(159, 15);
+            this.linkLabel.TabIndex = 70;
+            this.linkLabel.TabStop = true;
+            this.linkLabel.Text = "https://github.com/redakker";
+            this.linkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel_LinkClicked);
+            // 
             // AmbientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -638,6 +651,7 @@ namespace AmbientLight
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1052, 590);
+            this.Controls.Add(this.linkLabel);
             this.Controls.Add(this.label23);
             this.Controls.Add(this.label22);
             this.Controls.Add(this.buttonStart);
@@ -765,5 +779,6 @@ namespace AmbientLight
         private Button buttonStart;
         private Label label22;
         private Label label23;
+        private LinkLabel linkLabel;
     }
 }

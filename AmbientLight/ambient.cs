@@ -490,5 +490,10 @@ namespace AmbientLight
             }
             setUI();
         }
+
+        private void linkLabel_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("cmd", "/C start" + " https://github.com/redakker/ambientlight");            
+        }
     }
 }
