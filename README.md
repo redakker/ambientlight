@@ -23,7 +23,7 @@ Demo:
 - send the color data over MQTT
 - send the color data by calling a webhook
 - set send frequiency between 200ms and 15s 
-- skip the dark pixels (if R and G and B component are under 100)
+- skip the dark pixels (if R and G and B component are under 100) and the dark/light pixel ration is over 1:2
 - save config to a file (C:\Users\ [username] \AppData\Roaming\AmbientLight\config.json)
 - IMPORTANT: if the background calculates the same color after another then MQTT and webhook operation will be not called. It reduces the unnecessary calls, save network traffic
 
