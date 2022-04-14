@@ -8,8 +8,6 @@ namespace AmbientLight
 {
     public class Utils
     {
-        
-
         public static Bitmap GetSreenshot()
         {
             Bitmap bmp = new Bitmap(Screen.PrimaryScreen.Bounds.Width, Screen.PrimaryScreen.Bounds.Height);
@@ -118,7 +116,17 @@ namespace AmbientLight
 
             text = text.Replace(WildCards.HEX, ColorTranslator.ToHtml(screenColor.mainColor));
 
-            return text;
+            foreach (var colors in screenColor.screenColors)
+            {
+                text = text.Replace("{R" + colors.Key + "}", colors.Value.R.ToString());
+                text = text.Replace("{G" + colors.Key + "}", colors.Value.G.ToString());
+                text = text.Replace("{B" + colors.Key + "}", colors.Value.B.ToString());
+
+                text = text.Replace("{HEX" + colors.Key + "}", ColorTranslator.ToHtml(colors.Value));
+
+            }
+
+                return text;
         }
     }
 }

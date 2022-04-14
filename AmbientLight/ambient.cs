@@ -16,7 +16,8 @@ namespace AmbientLight
 
 
         public AmbientForm(Config config)
-        {   
+        {
+            TableLayoutPanel.CheckForIllegalCrossThreadCalls = false;
             this.config = config;
             
             InitializeComponent();
@@ -26,10 +27,11 @@ namespace AmbientLight
             background.IsBackground = true;
             background.Start();
 
-
             setConfigValues(config);
-            displayFrequency();            
+            displayFrequency();
+            displayWildcardsTable();
             setUI();
+            
 
             // Event handling
             colorGeneratedEvent += ColorGeneratedEventHandler;
@@ -40,9 +42,9 @@ namespace AmbientLight
             // We expecting a ScreenColorEvent here
             ColorEvent colorEvent = (ColorEvent) e;
 
-            string hex = Utils.replaceWildCards("{HEX}", colorEvent.screenColor);
+            displayColors(colorEvent.screenColor);
 
-            colorPanel.BackColor = colorEvent.screenColor.mainColor;
+            string hex = Utils.replaceWildCards("{HEX}", colorEvent.screenColor);
 
             if (lastColor != hex)
             {
@@ -74,24 +76,24 @@ namespace AmbientLight
         {
             // Webhook
 
-            if (comboHTTPMethod.SelectedIndex == (int)Webhook.Method.GET)
-            {
-                inputHTTPMessage.Enabled = false;
-                inputDataType.Enabled = false;
-            }
-
-            if (comboHTTPMethod.SelectedIndex == (int)Webhook.Method.POST)
-            {
-                inputHTTPMessage.Enabled = true;
-                inputDataType.Enabled = true;
-            }
-
             inputWebhook.Enabled = chkEnableWebhook.Checked;
             inputHTTPMessage.Enabled = chkEnableWebhook.Checked;
             inputDataType.Enabled = chkEnableWebhook.Checked;
             comboHTTPMethod.Enabled = chkEnableWebhook.Checked;
 
-            
+            if (chkEnableWebhook.Checked && comboHTTPMethod.SelectedIndex == (int)Webhook.Method.GET)
+            {
+                inputHTTPMessage.Enabled = false;
+                inputDataType.Enabled = false;
+                Debug.WriteLine("aaaaaaaaaaaaaaaaaaa");
+            }
+
+            if (chkEnableWebhook.Checked && comboHTTPMethod.SelectedIndex == (int)Webhook.Method.POST)
+            {
+
+                inputHTTPMessage.Enabled = true;
+                inputDataType.Enabled = true;
+            }
 
             // MQTT
             inputMQTTserver.Enabled = chkMQTTEnabled.Checked;
@@ -138,33 +140,37 @@ namespace AmbientLight
             screenColor.mainColor = mainColor;
 
 
-            // Then divide the screen and calculate the segments
+            // Then divide the screen and calculate the segments            
             int segmentX = 0;
             int segmentY = 0;
-            int segmentWidth = 0;
-            int segmentHeight = 0;
-
-            
-            segmentX = 0;
-            segmentY = 0;
-            segmentWidth = (int) screenshot.Width / config.segmentHorizontal;
-            segmentHeight = (int)screenshot.Height / config.segmentVertical;
+            int segmentWidth = (int) screenshot.Width / config.segmentHorizontal;
+            int segmentHeight = (int)screenshot.Height / config.segmentVertical;
 
             // Segment cannot be bigger then the screen size
             if (segmentWidth > screenshot.Width) { segmentHeight = screenshot.Width; }
             if (segmentHeight > screenshot.Height) { segmentHeight = screenshot.Height; }
             
 
+            // Go troug the segments from the upper left to right and down
+            // *-----> |
+            // *<------¡
+            int segmentCounter = 0;
             for (var j = 0; j < screenshot.Height; j = j + segmentHeight)
             {
                 for (var i = 0; i < screenshot.Width; i = i + segmentWidth)
                 {
-                    Rectangle screenP = new Rectangle(i, j, segmentWidth, segmentHeight);
-                    Bitmap segmentP = screenshot.Clone(screenP, screenshot.PixelFormat);                    
+                    Rectangle segmentArea = new Rectangle(i, j, segmentWidth, segmentHeight);
+                    Bitmap segmentPicture = screenshot.Clone(segmentArea, screenshot.PixelFormat);
+                    Color segmenColor = Utils.getPictureAverageColor(segmentPicture, config);
+                    try
+                    {
+                        screenColor.screenColors.TryAdd(segmentCounter++, segmenColor);
+                    } catch {
+                        Debug.WriteLine("Cannot add color to the list. This should not happen.");
+                    }
                 }
             }
 
-            
             Rectangle screenPart = new Rectangle(segmentX, segmentY, segmentWidth, segmentHeight);
             Bitmap segmentPic = screenshot.Clone(screenPart, screenshot.PixelFormat);
 
@@ -176,6 +182,79 @@ namespace AmbientLight
 
             // Otherwise the memory consumption is high till the normal GC running
             System.GC.Collect();
+        }
+
+        // Display color on the UI
+        private void displayColors(ScreenColor screenColor)
+        {
+            colorPanel.BackColor = screenColor.mainColor;            
+            
+            Debug.WriteLine("Horizontal segments: " + config.segmentHorizontal);
+            Debug.WriteLine("Vertical segments: " + config.segmentVertical);
+
+            // It is too slow, application almost crashes
+            /*
+            tableLayoutColors.Controls.Clear();            
+            
+            SetStyle(ControlStyles.UserPaint, true);
+            SetStyle(ControlStyles.AllPaintingInWmPaint, true);
+            SetStyle(ControlStyles.DoubleBuffer, true);
+
+            tableLayoutColors.ColumnCount = config.segmentHorizontal;
+            tableLayoutColors.RowCount = config.segmentVertical;
+
+            for (var i = 0; i < config.segmentHorizontal; i++) {
+                for (var j = 0; j < config.segmentVertical; j++)
+                {
+                    Label text = new Label();
+                    text.Text = "test";
+                    this.BeginInvoke((Action)(() =>
+                    {
+                        tableLayoutColors.Controls.Add(text, i, j);
+                    }));
+                }
+            }
+
+
+            tableLayoutColors.ResumeLayout();
+            */
+
+        }
+
+        private void displayWildcardsTable()
+        {
+            tableLayoutColors.SuspendLayout();            
+            tableLayoutColors.Controls.Clear();
+            tableLayoutColors.ColumnCount = config.segmentHorizontal;
+            tableLayoutColors.RowCount = config.segmentVertical;
+
+            int fontSize = 8;
+            if (config.segmentHorizontal * config.segmentVertical > 16)
+            {
+                fontSize = 6;
+            }
+
+            Font smallFont = new Font("Arial", fontSize);
+            tableLayoutColors.Font = smallFont;
+
+            int cellCounter = 0;
+            for (var i = 0; i < config.segmentVertical; i++)
+            {
+                for (var j = 0; j < config.segmentHorizontal; j++)
+                {
+                    Label text = new Label();
+                    text.Text = "{R" + cellCounter + "} " + " {G" + cellCounter + "} " + " {B" + cellCounter + "}\r\n{HEX" + cellCounter + "}";
+                    text.TextAlign = ContentAlignment.MiddleCenter;
+                    text.Anchor = AnchorStyles.None;
+                    text.AutoSize = true;
+
+                    tableLayoutColors.Controls.Add(text, j, i);
+                    
+                    cellCounter++;
+                }
+            }
+            
+            tableLayoutColors.ResumeLayout();
         }
 
         private async Task sendMQTT(ScreenColor color)
@@ -339,6 +418,7 @@ namespace AmbientLight
             {
                 config.segmentHorizontal = Int32.Parse(inputSegmentNumberHorizontal.Text);
                 if (config.segmentHorizontal < 1) { config.segmentHorizontal = 1; }
+                if (config.segmentHorizontal > 8) { config.segmentHorizontal = 8; }
             }
             catch
             {
@@ -350,12 +430,15 @@ namespace AmbientLight
             {
                 config.segmentVertical = Int32.Parse(inputSegmentNumberVertical.Text);
                 if (config.segmentVertical < 1) { config.segmentVertical = 1; }
+                if (config.segmentVertical > 8) { config.segmentVertical = 8; }
             }
             catch
             {
                 config.segmentVertical = Constants.DEFAULT_SEGMENT_NUMBER;
                 inputSegmentNumberVertical.Text = Constants.DEFAULT_SEGMENT_NUMBER.ToString();
             }
+
+            displayWildcardsTable();
 
             Utils.ConfigToJson(this.config);
             // Just for sure

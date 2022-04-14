@@ -32,10 +32,16 @@ namespace AmbientLight
 
                 if (config.webhook.HTTPMethod == Webhook.Method.POST)
                 {
-                    Debug.WriteLine("\nStarting POST method");                    
+                    Debug.WriteLine("Starting POST method");                    
                     string data = Utils.replaceWildCards(config.webhook.PostBody, screenColor);
 
-                    HttpContent content = new StringContent(config.webhook.PostBody, Encoding.UTF8, config.webhook.HTTPDataType);
+                    /*
+                    data = data.Replace("\n", "").Replace("\r", "");
+
+                    Debug.WriteLine(data);
+                    */
+
+                    HttpContent content = new StringContent(data, Encoding.UTF8, config.webhook.HTTPDataType);
                     HttpResponseMessage response = await client.PostAsync(calledURL, content);
                     response.EnsureSuccessStatusCode();
                     responseBody = await response.Content.ReadAsStringAsync();

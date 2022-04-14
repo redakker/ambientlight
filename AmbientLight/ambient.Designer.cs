@@ -1,4 +1,6 @@
-﻿namespace AmbientLight
+﻿using AmbientLight.models;
+
+namespace AmbientLight
 {
     partial class AmbientForm
     {
@@ -67,7 +69,6 @@
             this.label14 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
-            this.label17 = new System.Windows.Forms.Label();
             this.labelRed = new System.Windows.Forms.Label();
             this.labelGreen = new System.Windows.Forms.Label();
             this.labelBlue = new System.Windows.Forms.Label();
@@ -86,6 +87,8 @@
             this.tableLayoutColors = new System.Windows.Forms.TableLayoutPanel();
             this.label21 = new System.Windows.Forms.Label();
             this.buttonStart = new System.Windows.Forms.Button();
+            this.label22 = new System.Windows.Forms.Label();
+            this.label23 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.sleepTime)).BeginInit();
             this.SuspendLayout();
             // 
@@ -100,7 +103,7 @@
             // 
             // getColorNow
             // 
-            this.getColorNow.Location = new System.Drawing.Point(595, 251);
+            this.getColorNow.Location = new System.Drawing.Point(840, 251);
             this.getColorNow.Name = "getColorNow";
             this.getColorNow.Size = new System.Drawing.Size(200, 25);
             this.getColorNow.TabIndex = 0;
@@ -113,7 +116,7 @@
             this.colorPanel.BackColor = System.Drawing.SystemColors.Menu;
             this.colorPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.colorPanel.ForeColor = System.Drawing.SystemColors.ActiveCaption;
-            this.colorPanel.Location = new System.Drawing.Point(595, 43);
+            this.colorPanel.Location = new System.Drawing.Point(840, 43);
             this.colorPanel.Name = "colorPanel";
             this.colorPanel.Size = new System.Drawing.Size(200, 193);
             this.colorPanel.TabIndex = 1;
@@ -121,6 +124,7 @@
             // runningChk
             // 
             this.runningChk.AutoSize = true;
+            this.runningChk.Enabled = false;
             this.runningChk.Location = new System.Drawing.Point(27, 47);
             this.runningChk.Name = "runningChk";
             this.runningChk.Size = new System.Drawing.Size(71, 19);
@@ -167,7 +171,7 @@
             // calculatedColor
             // 
             this.calculatedColor.AutoSize = true;
-            this.calculatedColor.Location = new System.Drawing.Point(572, 20);
+            this.calculatedColor.Location = new System.Drawing.Point(817, 20);
             this.calculatedColor.Name = "calculatedColor";
             this.calculatedColor.Size = new System.Drawing.Size(206, 15);
             this.calculatedColor.TabIndex = 7;
@@ -375,7 +379,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(808, 20);
+            this.label11.Location = new System.Drawing.Point(595, 44);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(115, 15);
             this.label11.TabIndex = 32;
@@ -384,7 +388,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(819, 75);
+            this.label12.Location = new System.Drawing.Point(606, 99);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(30, 15);
             this.label12.TabIndex = 33;
@@ -393,7 +397,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(819, 95);
+            this.label13.Location = new System.Drawing.Point(606, 119);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(41, 15);
             this.label13.TabIndex = 34;
@@ -402,7 +406,7 @@
             // label14
             // 
             this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(819, 114);
+            this.label14.Location = new System.Drawing.Point(606, 138);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(33, 15);
             this.label14.TabIndex = 35;
@@ -411,7 +415,7 @@
             // label15
             // 
             this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(819, 133);
+            this.label15.Location = new System.Drawing.Point(606, 157);
             this.label15.Name = "label15";
             this.label15.Size = new System.Drawing.Size(60, 15);
             this.label15.TabIndex = 36;
@@ -420,25 +424,16 @@
             // label16
             // 
             this.label16.AutoSize = true;
-            this.label16.Location = new System.Drawing.Point(815, 157);
+            this.label16.Location = new System.Drawing.Point(595, 187);
             this.label16.Name = "label16";
-            this.label16.Size = new System.Drawing.Size(221, 15);
+            this.label16.Size = new System.Drawing.Size(226, 30);
             this.label16.TabIndex = 37;
-            this.label16.Text = "Wildcards can be used in MQTT message";
-            // 
-            // label17
-            // 
-            this.label17.AutoSize = true;
-            this.label17.Location = new System.Drawing.Point(865, 175);
-            this.label17.Name = "label17";
-            this.label17.Size = new System.Drawing.Size(125, 15);
-            this.label17.TabIndex = 38;
-            this.label17.Text = "and in the URL as well.";
+            this.label16.Text = "Wildcards can be used in MQTT and POST\r\nmessage and in the webhook URL as well.";
             // 
             // labelRed
             // 
             this.labelRed.AutoSize = true;
-            this.labelRed.Location = new System.Drawing.Point(896, 75);
+            this.labelRed.Location = new System.Drawing.Point(683, 99);
             this.labelRed.Name = "labelRed";
             this.labelRed.Size = new System.Drawing.Size(22, 15);
             this.labelRed.TabIndex = 39;
@@ -447,7 +442,7 @@
             // labelGreen
             // 
             this.labelGreen.AutoSize = true;
-            this.labelGreen.Location = new System.Drawing.Point(896, 95);
+            this.labelGreen.Location = new System.Drawing.Point(683, 119);
             this.labelGreen.Name = "labelGreen";
             this.labelGreen.Size = new System.Drawing.Size(23, 15);
             this.labelGreen.TabIndex = 40;
@@ -456,7 +451,7 @@
             // labelBlue
             // 
             this.labelBlue.AutoSize = true;
-            this.labelBlue.Location = new System.Drawing.Point(896, 114);
+            this.labelBlue.Location = new System.Drawing.Point(683, 138);
             this.labelBlue.Name = "labelBlue";
             this.labelBlue.Size = new System.Drawing.Size(22, 15);
             this.labelBlue.TabIndex = 41;
@@ -465,7 +460,7 @@
             // labelHEX
             // 
             this.labelHEX.AutoSize = true;
-            this.labelHEX.Location = new System.Drawing.Point(896, 133);
+            this.labelHEX.Location = new System.Drawing.Point(683, 157);
             this.labelHEX.Name = "labelHEX";
             this.labelHEX.Size = new System.Drawing.Size(37, 15);
             this.labelHEX.TabIndex = 42;
@@ -571,6 +566,9 @@
             // 
             // tableLayoutColors
             // 
+            this.tableLayoutColors.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutColors.CellBorderStyle = System.Windows.Forms.TableLayoutPanelCellBorderStyle.Single;
             this.tableLayoutColors.ColumnCount = 1;
             this.tableLayoutColors.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 12.5F));
@@ -614,6 +612,24 @@
             this.buttonStart.UseVisualStyleBackColor = true;
             this.buttonStart.Click += new System.EventHandler(this.buttonStart_Click);
             // 
+            // label22
+            // 
+            this.label22.AutoSize = true;
+            this.label22.Location = new System.Drawing.Point(595, 246);
+            this.label22.Name = "label22";
+            this.label22.Size = new System.Drawing.Size(232, 30);
+            this.label22.TabIndex = 68;
+            this.label22.Text = "The following table contains the wildcards \r\nfor the screen segments:";
+            // 
+            // label23
+            // 
+            this.label23.AutoSize = true;
+            this.label23.Location = new System.Drawing.Point(221, 444);
+            this.label23.Name = "label23";
+            this.label23.Size = new System.Drawing.Size(154, 75);
+            this.label23.TabIndex = 69;
+            this.label23.Text = "Post JSON example:\r\n{\r\n\"segment1_HEX\" : \"{HEX1}\",\r\n\"segment8_R\" : \"{R8}\"\r\n}\r\n";
+            // 
             // AmbientForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -622,6 +638,8 @@
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1052, 590);
+            this.Controls.Add(this.label23);
+            this.Controls.Add(this.label22);
             this.Controls.Add(this.buttonStart);
             this.Controls.Add(this.label21);
             this.Controls.Add(this.tableLayoutColors);
@@ -640,7 +658,6 @@
             this.Controls.Add(this.labelBlue);
             this.Controls.Add(this.labelGreen);
             this.Controls.Add(this.labelRed);
-            this.Controls.Add(this.label17);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label15);
             this.Controls.Add(this.label14);
@@ -681,7 +698,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "AmbientForm";
-            this.Text = "AmbientLight - v0.85";
+            this.Text = "AmbientLight - v1.0";
             ((System.ComponentModel.ISupportInitialize)(this.sleepTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -727,7 +744,6 @@
         private Label label14;
         private Label label15;
         private Label label16;
-        private Label label17;
         private Label labelRed;
         private Label labelGreen;
         private Label labelBlue;
@@ -747,5 +763,7 @@
         private TableLayoutPanel tableLayoutColors;
         private Label label21;
         private Button buttonStart;
+        private Label label22;
+        private Label label23;
     }
 }
