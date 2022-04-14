@@ -84,8 +84,7 @@ namespace AmbientLight
             if (chkEnableWebhook.Checked && comboHTTPMethod.SelectedIndex == (int)Webhook.Method.GET)
             {
                 inputHTTPMessage.Enabled = false;
-                inputDataType.Enabled = false;
-                Debug.WriteLine("aaaaaaaaaaaaaaaaaaa");
+                inputDataType.Enabled = false;                
             }
 
             if (chkEnableWebhook.Checked && comboHTTPMethod.SelectedIndex == (int)Webhook.Method.POST)
@@ -105,6 +104,17 @@ namespace AmbientLight
             inputMQTTMessage.Enabled = chkMQTTEnabled.Checked;
             inputMQTTUsername.Enabled = chkMQTTEnabled.Checked;
             inputMQTTPassword.Enabled = chkMQTTEnabled.Checked;
+
+            // Button
+
+            if (!runningChk.Checked)
+            {   
+                buttonStart.Text = "Save and start";
+            }
+            else
+            {   
+                buttonStart.Text = "Stop";
+            }
         }
 
         private void frequencyChanged(object sender, System.EventArgs e)
@@ -471,15 +481,14 @@ namespace AmbientLight
             {
                 config.isRunning = false;
                 runningChk.Checked = false;
-                saveConfig();
-                buttonStart.Text = "Save and start";
+                saveConfig();             
             } else
             {
                 config.isRunning = true;
                 runningChk.Checked = true;
-                saveConfig();
-                buttonStart.Text = "Stop";
+                saveConfig();             
             }
+            setUI();
         }
     }
 }
