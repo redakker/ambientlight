@@ -3,7 +3,7 @@
 This small Windows form program is created to analyze the PC screen and calculate an average color. This calculated color can be sent as a webhook or in an MQTT message.
 The output color data can be an RGB color code (128,234,55) or a HEX code (#D36AF4)
 
-![alt text](https://raw.githubusercontent.com/redakker/ambientlight/main/AmbientLight/material/ui.JPG)
+![alt text](https://raw.githubusercontent.com/redakker/ambientlight/main/AmbientLight/material/ui-v1.0.jpg)
 
 ## What is it for?
 
@@ -23,14 +23,15 @@ Demo:
 - send the color data over MQTT
 - send the color data by calling a webhook
 - set send frequiency between 200ms and 15s 
-- skip the dark pixels (if R and G and B component are under 100)
+- skip the dark pixels (if R and G and B component are under 100) and the dark/light pixel ration is over 1:2
 - save config to a file (C:\Users\ [username] \AppData\Roaming\AmbientLight\config.json)
+- IMPORTANT: if the background calculates the same color after another then MQTT and webhook operation will be not called. It reduces the unnecessary calls, save network traffic
 
 ## Todos / Known issues
 
 - currently, it analyzes **primary** screen only
 - it has no output (debug, error log)
-- TODO: divide the screen to segments and send more colors for LED strip. On WLED it is possible to have segments too. 
+- ~~TODO: divide the screen to segments and send more colors for LED strip. On WLED it is possible to have segments too.~~ ready
 
 ## Usage
 
@@ -43,6 +44,19 @@ Download the release version from here: https://github.com/redakker/ambientlight
 - press apply settings
 
 If the "Running" checkbox is set then the calculated RGB or HEX code is sent periodically with a set frequency.
+
+## UI options
+- Minimize to tray: allow the program to run in the background
+- Skip dark pixels: background calculation will skip the dark pixels. Dark pixels R < 100 and G < 100 and B < 100
+- Divide screen: UI will divide the screen smaller areas and will analyze hte color of the small segments. Wildcards of the segment colors are shown in the bottom-right side of the window
+- MQTT settings: set your MQTT credentials here. Wildcards for colors can be used in the message area (see the main picture)
+- Right side square: after a backround color generation this area shows the average color of the whole screen
+- Get color now button: push for one time calculation. Configuration can be tried/tested in this way
+- Webhook settings: Webhook data can be set here. Wildcards can be used in the URL and the POST body filelds as well.
+- Bottom-right panel: it shows how the screen is divided. Each segment shows the color wildcard for that area
+- Calculation frequency: set this value to get slower and faster calculation and sending
+- Apply configuration: save settings to the config file
+- Save and start: save settings to the config file and start the background process. If the background process is running this button stops the calculation.
 
 ## Examples
 
