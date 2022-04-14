@@ -31,7 +31,7 @@ Demo:
 
 - currently, it analyzes **primary** screen only
 - it has no output (debug, error log)
-- TODO: divide the screen to segments and send more colors for LED strip. On WLED it is possible to have segments too. 
+- ~~TODO: divide the screen to segments and send more colors for LED strip. On WLED it is possible to have segments too.~~ ready
 
 ## Usage
 
