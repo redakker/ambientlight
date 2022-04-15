@@ -60,10 +60,170 @@ If the "Running" checkbox is set then the calculated RGB or HEX code is sent per
 
 ## Examples
 
-### Control WLED
-Configure a webhook which calls the WLED microcontoller's API. The webhook is similar to this
+### Control WLED (simple)
+Configure webhook which calls the WLED microcontoller's API. GET request, single color
+The webhook is similar to this
+
 
 http:// [WLED_IP_ADDRESS] /win&T=1&FX=0&SX=0&R={R}&G={G}&B={B}
+
+### Control WLED (little bit complicates)
+Configure webhook which calls the WLED JSON API. POST request, screen divided to 4 segments
+
+Request URL: http:// [WLED_IP_ADDRESS] /json/state
+ˇˇˇ
+{
+    "transition": 7,
+    "seg": [
+        {
+            "id": 0,
+            "start": 0,
+            "stop": 30,
+            "grp": 1,
+            "spc": 0,
+            "of": 0,
+            "on": true,
+            "frz": false,
+            "bri": 255,
+            "cct": 127,
+            "col": [
+                [
+                    {R0},
+                    {G0},
+                    {B0}
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            "fx": 0,
+            "sx": 0,
+            "ix": 27,
+            "pal": 0,
+            "sel": true,
+            "rev": false,
+            "mi": false
+        },
+        {
+            "id": 1,
+            "start": 30,
+            "stop": 80,
+            "grp": 1,
+            "spc": 0,
+            "of": 0,
+            "on": true,
+            "frz": false,
+            "bri": 255,
+            "cct": 127,
+            "col": [
+                [
+                    {R1},
+                    {G1},
+                    {B1}
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            "fx": 0,
+            "sx": 0,
+            "ix": 27,
+            "pal": 0,
+            "sel": true,
+            "rev": false,
+            "mi": false
+        },
+        {
+            "id": 2,
+            "start": 80,
+            "stop": 110,
+            "grp": 1,
+            "spc": 0,
+            "of": 0,
+            "on": true,
+            "frz": false,
+            "bri": 255,
+            "cct": 127,
+            "col": [
+                [
+                    {R2},
+                    {G2},
+                    {B2}
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            "fx": 0,
+            "sx": 0,
+            "ix": 27,
+            "pal": 0,
+            "sel": true,
+            "rev": false,
+            "mi": false
+        },
+        {
+            "id": 4,
+            "start": 110,
+            "stop": 160,
+            "grp": 1,
+            "spc": 0,
+            "of": 0,
+            "on": true,
+            "frz": false,
+            "bri": 255,
+            "cct": 127,
+            "col": [
+                [
+                    {R3},
+                    {G3},
+                    {B3}
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0
+                ]
+            ],
+            "fx": 0,
+            "sx": 0,
+            "ix": 27,
+            "pal": 0,
+            "sel": true,
+            "rev": false,
+            "mi": false
+        }
+
+
+    ]
+}
+˘˘˘
 
 ### Control LEDs with Home Assistant
 
