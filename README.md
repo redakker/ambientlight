@@ -69,8 +69,13 @@ http:// [WLED_IP_ADDRESS] /win&T=1&FX=0&SX=0&R={R}&G={G}&B={B}
 
 ### Control WLED (little bit complicates)
 Configure webhook which calls the WLED JSON API. POST request, screen divided to 4 segments
+- set the the divide screen option to 2x2
+- enable the webhook checkbox
+- set the request URL: http:// [WLED_IP_ADDRESS] /json/state
+- paste the code below the the POST body input field
+- modify the JSON data start/stop properties for your LED installation (start, stop means the led number where the segment starts/ends)
 
-Request URL: http:// [WLED_IP_ADDRESS] /json/state
+
 ```
 {
     "transition": 5,
