@@ -73,7 +73,7 @@ Configure webhook which calls the WLED JSON API. POST request, screen divided to
 Request URL: http:// [WLED_IP_ADDRESS] /json/state
 ```
 {
-    "transition": 7,
+    "transition": 5,
     "seg": [
         {
             "id": 0,
